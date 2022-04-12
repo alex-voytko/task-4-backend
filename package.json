@@ -5,9 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "client": "npm start --prefix client",
-    "server": "nodemon index.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +19,5 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.2",
     "mongoose": "^6.2.10"
-  },
-  "devDependencies": {}
+  }
 }
