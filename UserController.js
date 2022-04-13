@@ -41,14 +41,14 @@ class UserController {
       if (user.isBlocked) {
         return res.status(400).json({ message: `This user has been blocked` });
       }
-      await user.update({
-        lastVisit: moment().format("Do of MMMM, HH:mm"),
-        isOnline: true,
-      });
       const validPassword = await bcryptjs.compare(password, user.password);
       if (!validPassword) {
         return res.status(400).json({ message: `Incorrect password` });
       }
+      await user.update({
+        lastVisit: moment().format("Do of MMMM, HH:mm"),
+        isOnline: true,
+      });
       const token = jsonwebtoken.sign(
         {
           userId: user._id,
