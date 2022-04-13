@@ -34,21 +34,21 @@ class UserController {
   async login(req, res) {
     try {
       const { email, password } = req.body;
-      const user = await User.findOneAndUpdate(
-        { email },
-        { lastVisit: moment().format("Do of MMMM, HH:mm"), isOnline: true }
-      );
-      if (user.isBlocked) {
-        return res.status(400).json({ message: `This user has been blocked` });
-      }
+      const user = await User.findOne({ email });
       if (!user) {
         return res.status(400).json({ message: `${email} has not found` });
       }
+      if (user.isBlocked) {
+        return res.status(400).json({ message: `This user has been blocked` });
+      }
+      await user.update({
+        lastVisit: moment().format("Do of MMMM, HH:mm"),
+        isOnline: true,
+      });
       const validPassword = await bcryptjs.compare(password, user.password);
       if (!validPassword) {
         return res.status(400).json({ message: `Incorrect password` });
       }
-
       const token = jsonwebtoken.sign(
         {
           userId: user._id,
